@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:background="#EEEEEE"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EEEEEE"
+        android:id="@+id/user_activity"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="#EEEEEE">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/name_inital"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="-15dp"
+                    android:background="@drawable/yellow_round_circle"
+                    android:gravity="center"
+                    android:maxLength="1"
+                    android:layout_centerHorizontal="true"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="50sp">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/edit_details"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignBaseline="@id/name_inital"
+                    android:layout_alignEnd="@+id/name_inital"
+                    android:background="@drawable/circle_border_white"
+                    android:clickable="true"
+                    android:contentDescription="@string/app_name"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_edit_black" />
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_name"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/name_inital"
+                    android:textSize="20sp"/>
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            ads:cardCornerRadius="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3">
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:id="@+id/l_contact"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_headset_mic_purple_24dp"
+                        android:contentDescription="@string/app_name"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/help"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:paddingTop="10dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="#9E9E9E"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp">
+
+                </View>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/l_review"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_stars_24dp"
+                        android:contentDescription="@string/app_name"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rate_us"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:paddingTop="10dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="#9E9E9E"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp">
+
+                </View>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/l_share"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_share_app"
+                        android:contentDescription="@string/app_name"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/share_app"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:paddingTop="10dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="18sp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/share_icon_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_email_purple" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#424242"
+                android:id="@+id/user_email"
+                android:layout_toEndOf="@+id/share_icon_img"
+                android:textSize="16sp" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="350dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="invisible"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_edit_black"/>
+
+        </RelativeLayout>
+
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_marginStart="65dp"-->
+<!--            android:layout_height="0.7dp"-->
+<!--            android:background="#BDBDBD"-->
+<!--            android:layout_marginLeft="70dp"-->
+<!--            tools:ignore="RtlHardcoded">-->
+<!--        </View>-->
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/help_icon_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_call_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#424242"
+                android:id="@+id/user_number"
+                android:layout_toEndOf="@+id/help_icon_img"
+                android:textSize="18sp" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="350dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="invisible"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_edit_black"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
+            android:id="@+id/r_feedback"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/feed_icon_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_email_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/feed_icon_img"
+                android:text="@string/give_a_feedback"
+                android:textColor="#424242"
+                android:textSize="18sp" />
+
+
+        </RelativeLayout>
+
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_marginStart="65dp"-->
+<!--            android:layout_height="0.7dp"-->
+<!--            android:background="#BDBDBD"-->
+<!--            android:layout_marginLeft="70dp"-->
+<!--            tools:ignore="RtlHardcoded">-->
+<!--        </View>-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
+            android:id="@+id/r_privacy"
+            android:padding="5dp">
+
+
+            <ImageView
+                android:id="@+id/pri_icon_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_policy" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/privacy_policy"
+                android:textColor="#424242"
+                android:layout_toEndOf="@+id/pri_icon_img"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_marginStart="65dp"-->
+<!--            android:layout_height="0.7dp"-->
+<!--            android:background="#BDBDBD"-->
+<!--            android:layout_marginLeft="70dp"-->
+<!--            tools:ignore="RtlHardcoded">-->
+<!--        </View>-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
+            android:id="@+id/r_appfeatures"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/app_icon_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_tooltip" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:text="App features"
+                android:textColor="#424242"
+                android:layout_toEndOf="@+id/app_icon_img"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal"
+            android:id="@+id/r_SignOut"
+            android:padding="5dp">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_sign_out"
+                android:id="@+id/sign_out_img"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/app_name"/>
+
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="15dp"-->
+            <!--                android:layout_marginTop="8dp"-->
+            <!--                android:clickable="true"-->
+            <!--                android:focusable="true"-->
+            <!--                android:text="@string/signout"-->
+            <!--                android:textStyle="bold"-->
+            <!--                android:textColor="#D50000"-->
+            <!--                android:textSize="20sp" />-->
+            <!--            -->
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:text="Log out"
+                android:textColor="#424242"
+                android:layout_toEndOf="@+id/sign_out_img"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/app_Version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:maxLength="13"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/text_grey_21"
+            android:textSize="17sp" />
+
+
+    </LinearLayout>
+
+</ScrollView>
+
