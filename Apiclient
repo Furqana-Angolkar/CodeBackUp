@@ -1,5 +1,7 @@
 /*Changed the Code for APi generating token on 8-Oct-2021*/
 
+/* if we call this method then call this in every activity
+ ApiInterface api = ApiClient.getRequestApi()*/
 
     private static final String BASE_URL = "https://api.prosoftesolutions.com/";
     private static Retrofit retrofit = null;
