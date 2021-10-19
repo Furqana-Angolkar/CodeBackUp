@@ -1,0 +1,36 @@
+//Splash Screen Migration
+ //Splash Screen
+   /* implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'*/
+
+
+<!--
+    <style name="Theme.MyApp" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDisablePreview">true</item>&lt;!&ndash;This is to avoid Glimse screen after splash screen&ndash;&gt;
+    </style>
+
+
+    <style name="Theme.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/colorWhite</item>
+
+       <item name="android:windowLightStatusBar" tools:targetApi="s">true</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
+
+        <item name="windowSplashScreenAnimationDuration" tools:targetApi="s">10000</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.MyApp</item>
+    </style>-->
+
+ <activity
+            android:name="Activity.Users.Splash"
+            android:screenOrientation="fullSensor"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/SplashTheme"
+            android:exported="true"
+            tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
