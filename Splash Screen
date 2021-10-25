@@ -59,6 +59,64 @@
 
 </layer-list>
         
+
+
+//Api to check in Splash Screen
+
+    private void checkDevice(String android_id,String mobile) {
+
+        Retrofit retrofit=ApiClient.getAPI(sharedPrefManager.getBaseURL());
+
+        ApiInterface api=retrofit.create(ApiInterface.class);
+
+/*
+        ApiInterface api = ApiClient.getRequestApi();
+*/
+
+        Call<User_parameters> call = api.login_user(mobile,android_id,"");
+
+        call.enqueue(new Callback<User_parameters>() {
+            @Override
+            public void onResponse(@NonNull Call<User_parameters> call, @NonNull Response<User_parameters> response) {
+                User_parameters responseList = response.body();
+
+                switch (response.code()){
+                    case 200:
+
+                        if (responseList.getStatus().equalsIgnoreCase("Already logged in another device") ||
+                                responseList.getStatus().equalsIgnoreCase("Incorrect device")) {
+
+                            gotoLoginActivity();
+
+                        }
+                        else {
+
+                            gotoImportActivity();
+                        }
+                        break;
+                    case 500:
+                        Toast.makeText(getApplicationContext(), "Error: Couldn't connect to server", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 404:Toast.makeText(getApplicationContext(), "Server Data Not Found", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 204:Toast.makeText(getApplicationContext(), "Data Not Found", Toast.LENGTH_SHORT).show();
+                     break;
+                    case 401:Toast.makeText(getApplicationContext(), "Unauthorized Data", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:Toast.makeText(getApplicationContext(), "No Response from Server",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<User_parameters> call, @NonNull Throwable t) {
+
+                gotoImportActivity();
+            }
+        });
+
+    }
+     
         
         
         
