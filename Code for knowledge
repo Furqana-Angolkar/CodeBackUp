@@ -40,3 +40,37 @@ StringBuilder builder = new StringBuilder();
         infoBuffer.append("-------------------------------------\n");
 
         Log.d("TAG", "onCreate: "+infoBuffer);
+        
+        
+        
+        
+        
+        
+        
+//Device Deprecated Method
+/* @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == GlobalVariables.MOBILE_OTP_VERIFY) {
+            boolean isVerified = false;
+            try {
+                if (data != null) {
+                    isVerified = data.getBooleanExtra("OtpVerified", false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (resultCode == 11 && isVerified) {
+                String mobileNumber = data.getStringExtra("mobileNumber");
+                String deviceID = data.getStringExtra("deviceID");
+                updateDevice(deviceID, mobileNumber);
+
+            } else {
+                uiUtils.showErrorCustomSnackBar(login_layout, "OTP verification failed", "Dismiss", Snackbar.LENGTH_LONG);
+            }
+        }
+
+    }
