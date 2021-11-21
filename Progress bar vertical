@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <View
+        android:id="@+id/MCC"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="92dp"
+        android:background="@drawable/shape_status_completed"
+        app:layout_constraintBottom_toBottomOf="@+id/mcctext"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <View
+        android:id="@+id/Series1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="92dp"
+        android:background="@drawable/shape_status_completed"
+        app:layout_constraintBottom_toBottomOf="@+id/Series1text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/Series1text"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/series2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="92dp"
+        android:background="@drawable/shape_status_completed"
+        app:layout_constraintBottom_toBottomOf="@+id/series2text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/series2text"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <View
+        android:id="@+id/series3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="92dp"
+        android:background="@drawable/shape_status_completed"
+        app:layout_constraintBottom_toBottomOf="@+id/series3text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/series3text"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <View
+        android:id="@+id/Roamers"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="92dp"
+        android:background="@drawable/shape_status_completed"
+        app:layout_constraintBottom_toBottomOf="@+id/roamerstext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roamerstext"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/SpCircle"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="92dp"
+        android:background="@drawable/shape_status_completed"
+        app:layout_constraintBottom_toBottomOf="@+id/sptext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sptext"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <!--TextView-->
+
+
+    <View
+        android:id="@+id/SpMaster"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="92dp"
+        android:background="@drawable/shape_status_completed"
+        app:layout_constraintBottom_toBottomOf="@+id/spmastertext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spmastertext"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/mcctext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:text="MCC Update"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/MCC"
+        app:layout_constraintStart_toStartOf="@+id/MCC"
+        tools:layout_editor_absoluteY="91dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/Series1text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="76dp"
+        android:text="Roamers"
+        app:layout_constraintStart_toEndOf="@+id/Series1"
+        app:layout_constraintTop_toBottomOf="@+id/mcctext" />
+
+    <TextView
+        android:id="@+id/series2text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="80dp"
+        android:text="Series2"
+        app:layout_constraintStart_toEndOf="@+id/series2"
+        app:layout_constraintTop_toBottomOf="@+id/Series1text" />
+
+    <TextView
+        android:id="@+id/sptext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="68dp"
+        android:text="Sp Circle"
+        app:layout_constraintStart_toEndOf="@+id/SpCircle"
+        app:layout_constraintTop_toBottomOf="@+id/roamerstext" />
+
+    <TextView
+        android:id="@+id/spmastertext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="80dp"
+        android:text="Sp Master"
+        app:layout_constraintStart_toEndOf="@+id/SpMaster"
+        app:layout_constraintTop_toBottomOf="@+id/SpCircle" />
+
+    <View
+        android:id="@+id/placed_divider2"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/series2"
+        app:layout_constraintEnd_toEndOf="@+id/Series1"
+        app:layout_constraintStart_toStartOf="@+id/Series1"
+        app:layout_constraintTop_toBottomOf="@id/Series1" />
+
+
+    <!--Divider-->
+
+    <TextView
+
+        android:id="@+id/series3text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="76dp"
+        android:text="Series3"
+        app:layout_constraintStart_toEndOf="@+id/series3"
+        app:layout_constraintTop_toBottomOf="@+id/series2text" />
+
+    <TextView
+
+        android:id="@+id/roamerstext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="64dp"
+        android:text="Roamers"
+        app:layout_constraintStart_toEndOf="@+id/Roamers"
+        app:layout_constraintTop_toBottomOf="@+id/series3text" />
+
+    <View
+        android:id="@+id/placed_divider1"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/Series1"
+        app:layout_constraintEnd_toEndOf="@+id/MCC"
+        app:layout_constraintStart_toStartOf="@+id/MCC"
+        app:layout_constraintTop_toBottomOf="@id/MCC" />
+
+    <View
+        android:id="@+id/placed_divider3"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:alpha="0.5"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/series3"
+        app:layout_constraintEnd_toEndOf="@+id/series2"
+        app:layout_constraintStart_toStartOf="@+id/series2"
+        app:layout_constraintTop_toBottomOf="@id/series2" />
+
+
+    <View
+        android:id="@+id/placed_divide4"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:alpha="0.5"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/Roamers"
+        app:layout_constraintEnd_toEndOf="@+id/series3"
+        app:layout_constraintStart_toStartOf="@+id/series3"
+        app:layout_constraintTop_toBottomOf="@id/series3" />
+
+
+    <View
+        android:id="@+id/placed_divider5"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:alpha="0.5"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/SpCircle"
+        app:layout_constraintEnd_toEndOf="@+id/Roamers"
+        app:layout_constraintStart_toStartOf="@+id/Roamers"
+        app:layout_constraintTop_toBottomOf="@id/Roamers" />
+
+
+    <View
+        android:id="@+id/placed_divider6"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:alpha="0.5"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/SpMaster"
+        app:layout_constraintEnd_toEndOf="@+id/SpCircle"
+        app:layout_constraintStart_toStartOf="@+id/SpCircle"
+        app:layout_constraintTop_toBottomOf="@id/SpCircle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
