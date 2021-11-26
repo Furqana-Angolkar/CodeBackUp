@@ -1,0 +1,773 @@
+
+
+public class MainActivity extends Activity {
+
+	private static final int CAMERA_CAPTURE = 1;
+	private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+	private Button select,takepic,crop;
+	private ImageView ivImage;
+	private String userChoosenTask;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		select = (Button) findViewById(R.id.select);
+		takepic = (Button) findViewById(R.id.takepic);
+		crop = (Button) findViewById(R.id.crop);
+		
+		crop.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent=new Intent(getApplicationContext(),CropActivity.class);
+				startActivity(intent);
+			}
+		});
+		select.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				galleryIntent();
+			}
+		});
+
+		takepic.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				cameraIntent();
+			}
+		});
+		ivImage = (ImageView) findViewById(R.id.ivImage);
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		switch (requestCode) {
+			case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					if(userChoosenTask.equals("Take Photo"))
+						cameraIntent();
+					else if(userChoosenTask.equals("Choose from Library"))
+						galleryIntent();
+				} else {
+					//code for deny
+				}
+				break;
+		}
+	}
+
+	private void selectImage() {
+		final CharSequence[] items = { "Take Photo", "Choose from Library",
+				"Cancel" };
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		builder.setTitle("Add Photo!");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int item) {
+				boolean result=Utility.checkPermission(MainActivity.this);
+
+				if (items[item].equals("Take Photo")) {
+					userChoosenTask ="Take Photo";
+					if(result)
+						cameraIntent();
+
+				} else if (items[item].equals("Choose from Library")) {
+					userChoosenTask ="Choose from Library";
+					if(result)
+						galleryIntent();
+
+				} else if (items[item].equals("Cancel")) {
+					dialog.dismiss();
+				}
+			}
+		});
+		builder.show();
+	}
+
+	private void galleryIntent()
+	{
+		Intent intent = new Intent();
+		intent.setType("image/*");
+		intent.setAction(Intent.ACTION_GET_CONTENT);//
+		startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+	}
+
+	private void cameraIntent()
+	{
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(intent, REQUEST_CAMERA);
+	}
+
+
+
+
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == SELECT_FILE)
+				onSelectFromGalleryResult(data);
+			else if (requestCode == REQUEST_CAMERA) {
+				try {
+					onCaptureImageResult(data);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(ivImage!=null)
+			{
+
+				try {
+					Bitmap bitmap = getBitmapFromUri(data.getData());
+					saveBitmapToCache(bitmap);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Intent intent = new Intent(this, EditImage.class);
+				startActivity(intent);
+
+			}
+		}
+	}
+	private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+		ParcelFileDescriptor parcelFileDescriptor =
+				getContentResolver().openFileDescriptor(uri, "r");
+		FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+		Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+		parcelFileDescriptor.close();
+		return image;
+	}
+	private void onCaptureImageResult(Intent data) throws IOException {
+		Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+		File destination = new File(Environment.getExternalStorageDirectory(),
+				System.currentTimeMillis() + ".jpg");
+
+		FileOutputStream fo;
+		try {
+			destination.createNewFile();
+			fo = new FileOutputStream(destination);
+			fo.write(bytes.toByteArray());
+			fo.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		saveBitmapToCache(thumbnail);
+		ivImage.setImageBitmap(thumbnail);
+
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		ivImage.setImageBitmap(getBitmapFromCache());
+	}
+
+	@SuppressWarnings("deprecation")
+	private void onSelectFromGalleryResult(Intent data) {
+
+		Bitmap bm=null;
+		if (data != null) {
+			try {
+				bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			saveBitmapToCache(bm);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+		ivImage.setImageBitmap(bm);
+	}
+
+
+	public void saveBitmapToCache(Bitmap bitmap) throws IOException {
+		String filename = "Image.jpg";
+		File cacheFile = new File(getApplicationContext().getCacheDir(), filename);
+		OutputStream out = new FileOutputStream(cacheFile);
+		bitmap.compress(Bitmap.CompressFormat.JPEG, (int) 100, out);
+		out.flush();
+		out.close();
+	}
+
+	public Bitmap getBitmapFromCache() {
+		File cacheFile = new File(getApplicationContext().getCacheDir(), "Image.jpg");
+		Bitmap myBitmap = BitmapFactory.decodeFile(cacheFile.getAbsolutePath());
+		return myBitmap;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Edit Image
+
+package com.task.camera;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.RotateAnimation;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.StreamCorruptedException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+
+public class EditImage extends AppCompatActivity {
+
+
+    private static final int REQUEST_CAMERA = 0;
+    private static final int SELECT_FILE = 1;
+    private static final int CROP_PIC = 0;
+    ImageView imageview1;
+    Button saveimage,rotate, crop,undo;
+    String image_uri = "";
+    Bitmap bitmap;
+    LinearLayout layoutshow, layoutcamera;
+    Uri picUri;
+    Bitmap bitmaprotate;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_image);
+
+        rotate = findViewById(R.id.rotate);
+        undo=findViewById(R.id.undo);
+        crop = findViewById(R.id.crop);
+        imageview1 = findViewById(R.id.imageView1);
+        saveimage = findViewById(R.id.save);
+        layoutshow = findViewById(R.id.layoutcrop);
+
+
+
+
+        if (getSupportActionBar() != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
+
+        bitmap = (Bitmap) getIntent().getParcelableExtra("BitmapImage");
+
+        rotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Bitmap showBitmap = getBitmapFromCache();
+                    Bitmap rotatedImage = rotateBitmap(showBitmap);
+                    saveBitmapToCache(rotatedImage);
+                    imageview1.setImageBitmap(getBitmapFromCache());
+                } catch (IOException e) {
+                    Log.e("tag", e.toString());
+                }
+            }
+        });
+
+        crop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageview1 != null) {
+                    Intent intent = new Intent(getApplicationContext(), CropActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Cropped cannot be done", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                imageview1.setImageBitmap(getBitmapFromCache());
+
+            }
+        });
+
+
+        ActivityCompat.requestPermissions(EditImage.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        ActivityCompat.requestPermissions(EditImage.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+
+        saveimage.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ShowToast")
+            @Override
+            public void onClick(View view) {
+                /*   saveImage();*/
+
+
+                Drawable drawable = imageview1.getDrawable();
+
+                // Get the bitmap from drawable object
+                if (drawable != null) {
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+
+                    // Save image to gallery
+                    String savedImageURL = MediaStore.Images.Media.insertImage(
+                            getContentResolver(),
+                            bitmap,
+                            "Image",
+                            "Images"
+                    );
+
+                    // Parse the gallery image url to uri
+                    Uri savedImageURI = Uri.parse(savedImageURL);
+
+
+
+                    Toast.makeText(getApplicationContext(),"Save To gallery",Toast.LENGTH_SHORT).show();
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "No Image to store", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    private void cameraIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA) {
+                try {
+                    onCaptureImageResult(data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+    private void onCaptureImageResult(Intent data) throws IOException {
+
+      Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        File imgFile = new  File("");
+
+        if(imgFile.exists()){
+
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            imageview1.setImageBitmap(myBitmap);
+
+        }
+
+        imageview1.setImageBitmap(thumbnail);
+        saveBitmapToCache(thumbnail);
+        layoutshow.setVisibility(View.VISIBLE);
+        layoutcamera.setVisibility(View.GONE);
+    }
+
+
+    @SuppressWarnings("deprecation")
+    private void onSelectFromGalleryResult(Intent data) {
+
+        Bitmap bm = null;
+        if (data != null) {
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        imageview1.setImageBitmap(bm);
+    }
+
+
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+
+
+                @Override
+                public void onActivityResult(Uri uri) {
+                    if (uri != null) {
+                        image_uri = uri.toString();
+                        try {
+                            Bitmap showBitmap = getBitmapFromUri(uri);
+                            saveBitmapToCache(showBitmap);
+                            imageview1.setImageBitmap(showBitmap);
+                            layoutshow.setVisibility(View.VISIBLE);
+                            layoutcamera.setVisibility(View.GONE);
+
+                        } catch (IOException e) {
+                            Log.e("tag", e.toString());
+                        }
+                    }
+                }
+            });
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        imageview1.setImageBitmap(getBitmapFromCache());
+        if (!image_uri.equals("")){
+
+        }
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
+
+    public void saveBitmapToCache(Bitmap bitmap) throws IOException {
+        String filename = "Image.jpg";
+        File cacheFile = new File(getApplicationContext().getCacheDir(), filename);
+        OutputStream out = new FileOutputStream(cacheFile);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, (int) 100, out);
+        out.flush();
+        out.close();
+    }
+
+    public Bitmap getBitmapFromCache() {
+        File cacheFile = new File(getApplicationContext().getCacheDir(), "Image.jpg");
+        Bitmap myBitmap = BitmapFactory.decodeFile(cacheFile.getAbsolutePath());
+        return myBitmap;
+    }
+
+    public Bitmap rotateBitmap(Bitmap bitmap) {
+        android.graphics.Matrix matrix = new android.graphics.Matrix();
+        matrix.postScale((float) 1, (float) 1);
+        matrix.postRotate(90);
+
+         bitmaprotate = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
+         
+
+        return bitmaprotate;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   /* protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_CAPTURE) {
+                // get the Uri for the captured image
+                 picUri = data.getData();
+                 performCrop();
+            }
+            // user is returning from cropping the image
+            else if (requestCode == CROP_PIC) {
+                // get the returned data
+                Bundle extras = data.getExtras();
+                // get the cropped bitmap
+                Bitmap thePic = extras.getParcelable("data");
+                imageview1.setImageBitmap(thePic);
+            }
+        }
+    }*/
+
+    /**
+     * this function does the crop operation.
+     */
+    private void performCrop() {
+        // take care of exceptions
+        try {
+            // call the standard crop action intent (the user device may not
+            // support it)
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*");
+            // set crop properties
+            cropIntent.putExtra("crop", "true");
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 2);
+            cropIntent.putExtra("aspectY", 1);
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 256);
+            cropIntent.putExtra("outputY", 256);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, CROP_PIC);
+        }
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            Toast toast = Toast
+                    .makeText(this, "This device doesn't support the crop action!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if (dir != null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
+
+
+    /*Method*/
+    public static class CacheStore {
+        private static CacheStore INSTANCE = null;
+        private HashMap<String, String> cacheMap;
+        private HashMap<String, Bitmap> bitmapMap;
+        private static final String cacheDir = "/Android/data/com.yourbusiness/cache/";
+        private static final String CACHE_FILENAME = ".cache";
+
+        @SuppressWarnings("unchecked")
+        private CacheStore() {
+            cacheMap = new HashMap<String, String>();
+            bitmapMap = new HashMap<String, Bitmap>();
+            File fullCacheDir = new File(Environment.getExternalStorageDirectory().toString(), cacheDir);
+            if (!fullCacheDir.exists()) {
+                Log.i("CACHE", "Directory doesn't exist");
+                cleanCacheStart();
+                return;
+            }
+            try {
+                ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(new FileInputStream(new File(fullCacheDir.toString(), CACHE_FILENAME))));
+                cacheMap = (HashMap<String, String>) is.readObject();
+                is.close();
+            } catch (StreamCorruptedException e) {
+                Log.i("CACHE", "Corrupted stream");
+                cleanCacheStart();
+            } catch (FileNotFoundException e) {
+                Log.i("CACHE", "File not found");
+                cleanCacheStart();
+            } catch (IOException e) {
+                Log.i("CACHE", "Input/Output error");
+                cleanCacheStart();
+            } catch (ClassNotFoundException e) {
+                Log.i("CACHE", "Class not found");
+                cleanCacheStart();
+            }
+        }
+
+        private void cleanCacheStart() {
+            cacheMap = new HashMap<String, String>();
+            File fullCacheDir = new File(Environment.getExternalStorageDirectory().toString(), cacheDir);
+            fullCacheDir.mkdirs();
+            File noMedia = new File(fullCacheDir.toString(), ".nomedia");
+            try {
+                noMedia.createNewFile();
+                Log.i("CACHE", "Cache created");
+            } catch (IOException e) {
+                Log.i("CACHE", "Couldn't create .nomedia file");
+                e.printStackTrace();
+            }
+        }
+
+        private synchronized static void createInstance() {
+            if (INSTANCE == null) {
+                INSTANCE = new CacheStore();
+            }
+        }
+
+        public static CacheStore getInstance() {
+            if (INSTANCE == null) createInstance();
+            return INSTANCE;
+        }
+
+        public void saveCacheFile(String cacheUri, Bitmap image) {
+            File fullCacheDir = new File(Environment.getExternalStorageDirectory().toString(), cacheDir);
+            String fileLocalName = new SimpleDateFormat("ddMMyyhhmmssSSS").format(new java.util.Date()) + ".PNG";
+            File fileUri = new File(fullCacheDir.toString(), fileLocalName);
+            FileOutputStream outStream = null;
+            try {
+                outStream = new FileOutputStream(fileUri);
+                image.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.flush();
+                outStream.close();
+                cacheMap.put(cacheUri, fileLocalName);
+                Log.i("CACHE", "Saved file " + cacheUri + " (which is now " + fileUri.toString() + ") correctly");
+                bitmapMap.put(cacheUri, image);
+                ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(
+                        new FileOutputStream(new File(fullCacheDir.toString(), CACHE_FILENAME))));
+                os.writeObject(cacheMap);
+                os.close();
+            } catch (FileNotFoundException e) {
+                Log.i("CACHE", "Error: File " + cacheUri + " was not found!");
+                e.printStackTrace();
+            } catch (IOException e) {
+                Log.i("CACHE", "Error: File could not be stuffed!");
+                e.printStackTrace();
+            }
+        }
+
+        public Bitmap getCacheFile(String cacheUri) {
+            if (bitmapMap.containsKey(cacheUri)) return (Bitmap) bitmapMap.get(cacheUri);
+
+            if (!cacheMap.containsKey(cacheUri)) return null;
+            String fileLocalName = cacheMap.get(cacheUri).toString();
+            File fullCacheDir = new File(Environment.getExternalStorageDirectory().toString(), cacheDir);
+            File fileUri = new File(fullCacheDir.toString(), fileLocalName);
+            if (!fileUri.exists()) return null;
+
+            Log.i("CACHE", "File " + cacheUri + " has been found in the Cache");
+            Bitmap bm = BitmapFactory.decodeFile(fileUri.toString());
+            bitmapMap.put(cacheUri, bm);
+            return bm;
+        }
+
+
+    }
+}
