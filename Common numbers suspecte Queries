@@ -1,0 +1,8 @@
+
+/*        String selectQuery = "SELECT  va.CalledPhoneNo ,AM.CDRName,count(v.calledphoneno) as [Total Calls],va.CDRProfileID \n" +
+                "AS CDRProfileID_Hide,AM.CDRPhoneNo\n" +
+                "FROM STU_CalledPhoneNo va INNER JOIN CDRProfile AM ON va.CDRProfileID  = AM.CDRProfileID \n" +
+                "INNER JOIN CDRdata v on v.cdrprofileid=va.cdrprofileid\n" +
+                "WHERE va.CalledPhoneNo = '"+num+"' AND v.CalledPhoneNo= '"+num+"' \n" +
+                "group by va.CDRProfileID,AM.CDRName,va.CalledPhoneNo\n" +
+                "order by [Total Calls] desc";*/
