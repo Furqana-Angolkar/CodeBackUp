@@ -1,0 +1,10 @@
+Razor pay
+Signup and Login to razor pay account 
+Take the live api for transaction purpose and test api for texting purspose
+
+
+In android appplication
+1.Need to build sdk library 
+2.Call the metadeta key in manifest file
+3.Implement payment listener in android application and set the payment mode in json form
+4.Refer the code in Payemnt razor in Android Studio Projects
